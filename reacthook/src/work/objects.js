@@ -1,44 +1,30 @@
 import React, { useState } from 'react';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
 
-function Objects() {
-  const [data, setData] = useState("");
-  const [price, setPrice] = useState(0);
-  const [output, setOutput] = useState([]);
-  const [editing, setEditing] = useState(0);
-  const [totalCost, setCost] = useState(0);
-  const [objectForm, setObject] = useState([]);
+import Objects from './objects/Cashregister'
 
-  let onClick = (event) => {
-    event.preventDefault()
-    let out = output
-    let out2 = objectForm
-    if(data === '' || price === 0) return
-    out.push(`${data}    ${price}`)
-    out2.push(price)
-    setObject(out2)
-    let prices = 0
-    objectForm.forEach((value) => {
-      prices = parseInt(prices) + parseInt(value)
-    })
-    setCost(prices)
-    setEditing(editing + 1)
-    setOutput(out)
-  }
+function Routers() {
 
-  return (
-    <div>
-      <h1>Current cost is {totalCost}</h1>
-      <ul>
-        {output.map(item => (
-          <li>{item} </li>
-          ))}
-      </ul>
-      <form onSubmit={onClick}>
-        <input placeholder="Enter Name" type="text" onChange={(event) => {setData(event.target.value)}}></input>
-        <input placeholder="Enter Price" type="text" onChange={(event) => {setPrice(event.target.value)}}></input>
-        <button onClick={onClick} >{'Set '+editing}</button>
-      </form>
-     </div>
-  );
+    return (
+        <div>
+            <Router>
+                <ul>
+                    <li>
+                        <Link to="/cashregister">Cash Register</Link>
+                    </li>
+                </ul>
+                <Switch>
+                        <Route path="/cashregister">
+                            <Objects />
+                        </Route>
+                </Switch>
+            </Router>
+        </div>
+    );
 }
-export default Objects
+export default Routers
