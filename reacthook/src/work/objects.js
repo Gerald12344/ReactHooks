@@ -15,7 +15,7 @@ function Routers() {
             <Router>
                 <ul>
                     <li>
-                        <Link to="/cashregister">Cash Register</Link>
+                        <Link to="/cashregister">Cash Register Object</Link>
                     </li>
                 </ul>
                 <Switch>
