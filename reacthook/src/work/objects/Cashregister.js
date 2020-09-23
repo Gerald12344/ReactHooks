@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
 
-function useNameAndAge({dName, dAge}) {
-  const [name, setName] = useState(dName)
-  const [age, setAge] = useState(dAge)
-
-  return {
-    name, age, setName, setAge
-  }
-}
 
 function Objects() {
   const [data, setData] = useState("");
@@ -16,9 +8,6 @@ function Objects() {
   const [editing, setEditing] = useState(0);
   const [totalCost, setCost] = useState(0);
   const [objectForm, setObject] = useState([]);
-  const [currentValue, setCurrent1] = useState([]);
-  const [currentValue2, setCurrent2] = useState([]);
-
 
 
   let onClick = (event) => {
@@ -39,7 +28,8 @@ function Objects() {
   }
 
   return (
-    <div>
+    <div style={{display:"block"}}>
+      <br></br>
       <h1>Current cost is {totalCost}</h1>
       <ul>
         {output.map(item => (

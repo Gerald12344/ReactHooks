@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     BrowserRouter as Router,
     Switch,
@@ -11,9 +11,9 @@ import Objects from './work/objects'
 function Routers() {
 
     return (
-        <div>
+        <div style={{display:"inline-block"}}>
             <Router>
-                <ul>
+                <ul style={{display:"inline-block"}}>
                     <li>
                         <Link to="/">Home</Link>
                     </li>
