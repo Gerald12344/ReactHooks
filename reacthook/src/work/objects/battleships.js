@@ -1,24 +1,23 @@
 import Sketch from "react-p5";
 import React from 'react';
+import Board from './BattleShipModules/board'
+import syles from '../../App.css'
 
 export default (props) => {
-    let x = 50;
-    const y = 50;
- 
-    const setup = (p5, canvasParentRef) => {
-        // use parent to render the canvas in this ref
-        // (without that p5 will render the canvas outside of your component)
-        p5.createCanvas(500, 500).parent(canvasParentRef);
-    };
- 
-    const draw = (p5) => {
-        p5.background(0);
-        p5.ellipse(x, y, 70, 70);
-        // NOTE: Do not use setState in the draw function or in functions that are executed
-        // in the draw function...
-        // please use normal variables or class properties for these purposes
-        x++;
-    };
- 
-    return <Sketch setup={setup} draw={draw} />;
+    
+    
+    
+    return(
+        <div className="MaimnBattleShip">
+        <div style={{float:"left",display:"inline"}}>
+        <h1>Players</h1>
+        <Board />
+        </div>
+        <div style={{float:"left",display:"inline",height:"100%"}} className="innerDiv">
+        <h1>Welcome to BattleShips</h1>
+        <h2>Do you want to create or join a game?</h2>
+        <input></input>
+        </div>
+        </div>
+    ) 
 };
