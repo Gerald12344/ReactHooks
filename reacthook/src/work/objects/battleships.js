@@ -5,12 +5,12 @@ import Board from './BattleShipModules/board'
 export default (props) => {
 
     const [Menu, setMenu] = useState(0)
+    const [EnemyPoints, setEnemyPoints] = useState([])
 
     let MakeGame = () => {
 
     }
     let JoinGames = (event) => {
-        console.log(event)
         if (event === undefined) { return }
         setMenu(1)
     }
@@ -23,6 +23,12 @@ export default (props) => {
         if (event === undefined) { return }
         setMenu(3)
     }
+
+    setInterval(function(){
+        let array = EnemyPoints
+        array.push({X:(Math.round(Math.random()*9))+1,Y:(Math.round(Math.random()*9))+1})
+        setEnemyPoints(array)
+    },100000000)
 
 
     function Menus() {
@@ -44,7 +50,12 @@ export default (props) => {
                 <input className="buttonMain" type="button" onClick={e => Homepage(e)} value="Go back"></input>
             </div>)
         }else if (Menu === 3){
-            return (<Board type="aiming" />)
+            return (
+            <div className="boards">
+                <Board type="Ships" points={EnemyPoints} />
+                <Board type="aiming" />
+            </div>
+            )
         }
     }
 
