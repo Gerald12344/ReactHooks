@@ -1,11 +1,18 @@
 import Sketch from "react-p5";
 import React, { useState } from 'react';
 import Board from './BattleShipModules/board'
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://127.0.0.1:4001";
+
 
 export default (props) => {
 
     const [Menu, setMenu] = useState(0)
     const [EnemyPoints, setEnemyPoints] = useState([])
+    const [GameCode, setGameCode] = useState("")
+    const [Name, setName] = useState('')
+
+    const socket = socketIOClient(ENDPOINT);
 
     let MakeGame = () => {
 
@@ -21,8 +28,13 @@ export default (props) => {
     let formsubmitted = (event) => {
         event.preventDefault();
         if (event === undefined) { return }
-        setMenu(3)
+        socket.emit('JoinGame',GameCode)
     }
+    socket.on('GameAccepted',(info)=>{
+        console.log(info)
+        setName(info)
+        setMenu(3)
+    })
 
     setInterval(function(){
         let array = EnemyPoints
@@ -30,6 +42,11 @@ export default (props) => {
         setEnemyPoints(array)
     },100000000)
 
+    function onClicks(e){
+        e.target.focus()
+        e.preventDefault()
+        setGameCode(e.target.value)
+    }
 
     function Menus() {
         if (Menu === 0) {
@@ -43,7 +60,7 @@ export default (props) => {
             return (<div style={{ float: "left", display: "inline", height: "100%" }} className="innerDiv">
                 <h1>Enter the game code below:</h1>
                 <form onSubmit={e => formsubmitted(e)}>
-                    <input className="buttonMain" type="text" placeholder="Create Game"></input>
+                    <input className="buttonMain" type="number" placeholder="Create Game" key={ Math.random } value={GameCode} onChange={onClicks} autofocus ref={input => input && input.focus()}></input>
                     <input className="buttonMain" type="submit" value="Submit"></input>
                 </form>
                 <br></br>
@@ -52,7 +69,7 @@ export default (props) => {
         }else if (Menu === 3){
             return (
             <div className="boards">
-                <Board type="Ships" points={EnemyPoints} />
+                <Board type="Ships" points={Name[Name.Enemyplayer].shots} />
                 <Board type="aiming" />
             </div>
             )
