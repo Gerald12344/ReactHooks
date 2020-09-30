@@ -59,7 +59,7 @@ export default (props) => {
 
     const mouseClicked = (p5) => {
         let x = snap(p5.mouseX)-8.5
-        let y = snap(p5.mouseY)+12s
+        let y = snap(p5.mouseY)+12
         // prevent default
         return false;
     }
