@@ -19,7 +19,9 @@ export default (props) => {
         setMenu(0)
     }
     let formsubmitted = (event) => {
-        console.log(event)
+        event.preventDefault();
+        if (event === undefined) { return }
+        setMenu(3)
     }
 
 
@@ -41,16 +43,14 @@ export default (props) => {
                 <br></br>
                 <input className="buttonMain" type="button" onClick={e => Homepage(e)} value="Go back"></input>
             </div>)
+        }else if (Menu === 3){
+            return (<Board type="aiming" />)
         }
     }
 
 
     return (
         <div className="MaimnBattleShip">
-            <div style={{ float: "left", display: "inline", width: "fit-content" }}>
-                <h1>Players</h1>
-                <Board />
-            </div>
             <div style={{ margin: "auto", width: "fit-content" }}>
                 <Menus />
             </div>
