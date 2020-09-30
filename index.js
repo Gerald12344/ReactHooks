@@ -68,6 +68,8 @@ io.on('connection', (socket) => {
             socketsListening: [],
             PlayerASoc: `${socket.id}`,
             PlayerBSoc: "",
+            PA:false,
+            PB:false,
             PlayerA: {
                 shots: [],
                 ships: [],
