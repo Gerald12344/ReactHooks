@@ -8,7 +8,7 @@ import {
 
 import Objects from './work/objects'
 
-function Routers() {
+function Routers(props) {
 
     return (
         <div style={{display:"inline-block"}}>
@@ -27,7 +27,7 @@ function Routers() {
                 <Switch>
                     <Switch>
                         <Route path="/objects">
-                            <Objects />
+                            <Objects socketIOClient={props.socketIOClient} ENDPOINT={props.ENDPOINT} />
                         </Route>
                         <Route path="/topics">
                         </Route>

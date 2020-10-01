@@ -10,8 +10,10 @@ import {
 import Objects from './objects/Cashregister'
 import CreditCard from './objects/creditcard'
 import BattleShip from './objects/battleships'
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://localhost:4001";
 
-function Routers() {
+function Routers(props) {
     let match = useRouteMatch();
 
     return (
@@ -36,7 +38,7 @@ function Routers() {
                             <CreditCard />
                         </Route>
                         <Route path={`${match.url}/BattleShips`}>
-                            <BattleShip />
+                            <BattleShip socketIOClient={socketIOClient} ENDPOINT={ENDPOINT}/>
                         </Route>
                 </Switch>
             </Router>
