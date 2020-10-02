@@ -1,8 +1,6 @@
 import Sketch from "react-p5";
 import React, { useState } from 'react';
 import Board from './BattleShipModules/board'
-import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:4001";
 
 
 export default (props) => {
@@ -13,7 +11,7 @@ export default (props) => {
     const [Name, setName] = useState({})
     const [setup, setSetup] = useState(false)
 
-    const socket = socketIOClient(ENDPOINT);
+    const socket = props.socketIOClient;
 
     let MakeGame = () => {
 
