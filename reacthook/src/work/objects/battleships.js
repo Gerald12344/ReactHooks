@@ -1,7 +1,8 @@
 import Sketch from "react-p5";
 import React, { useState } from 'react';
 import Board from './BattleShipModules/board'
-
+import {SocketIOContext} from '../../SocketIOContext';
+import useInterval from '../../useInterval';
 
 export default (props) => {
 
@@ -11,60 +12,75 @@ export default (props) => {
     const [Name, setName] = useState({})
     const [setup, setSetup] = useState(false)
 
-    const socket = props.socketIOClient;
+    // JMS: Pull the socket in from the context
+    // Way better than drilling a hole through all the components via props
+    const socket = React.useContext(SocketIOContext);
 
-    let MakeGame = () => {
+    // JMS: useCallback prevents these functions being redeclared constantly
+    let MakeGame = React.useCallback((event) => {
 
-    }
-    let JoinGames = (event) => {
+    }, []);
+    
+    let JoinGames = React.useCallback((event) => {
         if (event === undefined) { return }
         setMenu(1)
-    }
-    let Homepage = (event) => {
+    }, [setMenu])
+
+    let Homepage = React.useCallback((event) => {
         if (event === undefined) { return }
         setMenu(0)
-    }
-    let formsubmitted = (event) => {
+    }, [setMenu])
+
+    let formsubmitted = React.useCallback((event) => {
         event.preventDefault();
         if (event === undefined) { return }
         socket.emit('JoinGame', GameCode)
-    }
-    socket.on('GameAccepted', (info) => {
-        console.log(info)
-        setName(info)
-        setMenu(3)
-        setSetup(false)
-    })
+    }, [socket])
 
-    setInterval(function () {
+    // JMS: Only redo this if the things in the dependency array change, not every render
+    React.useEffect(() => {
+        socket.on('GameAccepted', (info) => {
+            console.log(info)
+            setName(info)
+            setMenu(3)
+            setSetup(false)
+        })
+    }, [socket, setName, setMenu, setSetup])
+
+    // JMS: There is a major impedence mismatch between setInterval and the React model
+    // Replace this with 'useInterval' which I have borrowed from another project and pasted into yours...
+    useInterval(function () {
         let array = EnemyPoints
         array.push({ X: (Math.round(Math.random() * 9)) + 1, Y: (Math.round(Math.random() * 9)) + 1 })
         setEnemyPoints(array)
     }, 100000000)
 
-    function onClicks(e) {
+    const onClicks = React.useCallback((e) => {
         e.target.focus()
         e.preventDefault()
         setGameCode(e.target.value)
-    }
+    }, [setGameCode])
 
+    // JMS: I would be tempted to 
     function Menus() {
         if (Menu === 0) {
             return (<div style={{ float: "left", display: "inline", height: "100%" }} className="innerDiv">
                 <h1>Welcome to BattleShips</h1>
                 <h2>Do you want to create or join a game?</h2>
-                <input className="buttonMain" type="button" onClick={e => MakeGame(e)} value="Create Game"></input>
-                <input className="buttonMain" type="button" onClick={e => JoinGames(e)} value="Join Game"></input>
+                {/* JMS: Don't pass anonymouse function in as onClick, otherwise they get regenerated for every render (React beartrap)*/}
+                <input className="buttonMain" type="button" onClick={MakeGame} value="Create Game"></input>
+                <input className="buttonMain" type="button" onClick={JoinGames} value="Join Game"></input>
             </div>)
         } else if (Menu === 1) {
             return (<div style={{ float: "left", display: "inline", height: "100%" }} className="innerDiv">
                 <h1>Enter the game code below:</h1>
                 <form onSubmit={e => formsubmitted(e)}>
+                    {/* JMS: What is the key attribute doing on this input? */}
                     <input className="buttonMain" type="number" placeholder="Create Game" key={Math.random} value={GameCode} onChange={onClicks} autofocus ref={input => input && input.focus()}></input>
                     <input className="buttonMain" type="submit" value="Submit"></input>
                 </form>
                 <br></br>
-                <input className="buttonMain" type="button" onClick={e => Homepage(e)} value="Go back"></input>
+                <input className="buttonMain" type="button" onClick={Homepage} value="Go back"></input>
             </div>)
         } else if (Menu === 3) {
             return (

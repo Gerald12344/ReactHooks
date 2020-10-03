@@ -8,10 +8,9 @@ import {
 } from "react-router-dom";
 
 import Objects from './objects/Cashregister'
+import CashRegisterJMS from './objects/CashRegisterJMS';
 import CreditCard from './objects/creditcard'
 import BattleShip from './objects/battleships'
-import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://localhost:4001";
 
 function Routers(props) {
     let match = useRouteMatch();
@@ -24,6 +23,9 @@ function Routers(props) {
                         <Link to={`${match.url}/cashregister`}>Cash Register Object</Link>
                     </li>
                     <li>
+                        <Link to={`${match.url}/cashregisterJMS`}>Cash Register by Mr Sharp</Link>
+                    </li>
+                    <li>
                         <Link to={`${match.url}/creditCardValidator`}>Credit Card Validator</Link>
                     </li>
                     <li>
@@ -34,11 +36,14 @@ function Routers(props) {
                         <Route path={`${match.url}/cashregister`}>
                             <Objects />
                         </Route>
+                        <Route path={`${match.url}/cashregisterJMS`}>
+                            <CashRegisterJMS />
+                        </Route>
                         <Route path={`${match.url}/creditCardValidator`}>
                             <CreditCard />
                         </Route>
                         <Route path={`${match.url}/BattleShips`}>
-                            <BattleShip socketIOClient={socketIOClient} ENDPOINT={ENDPOINT}/>
+                            <BattleShip />
                         </Route>
                 </Switch>
             </Router>

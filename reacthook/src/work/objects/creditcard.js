@@ -6,7 +6,7 @@ function Objects() {
 
 
 
-    let onClicks = (event) => {
+    let onClicks = React.useCallback((event) => {
         setData(event.target.value)
         let digits = event.target.value
         if(digits.length === 16){
@@ -41,15 +41,16 @@ function Objects() {
             setvalidiaty(false)
             return
         }
-    }
-    let upgradesPeople = () => {
+    }, [setvalidiaty, setData]);
+
+    let upgradesPeople = React.useCallback(() => {
         if (valid) {
             return `The Card ${data} Credit Card is Valid`
         }
         else {
             return `The Card ${data} Credit Card is Not Valid`
         }
-    }
+    }, [valid, data]);
 
     return (
         <div style={{ display: "block" }}>
