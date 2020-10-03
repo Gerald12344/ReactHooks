@@ -27,7 +27,7 @@ function Routers(props) {
                 <Switch>
                     <Switch>
                         <Route path="/objects">
-                            <Objects socketIOClient={props.socketIOClient} ENDPOINT={props.ENDPOINT} />
+                            <Objects />
                         </Route>
                         <Route path="/topics">
                         </Route>
